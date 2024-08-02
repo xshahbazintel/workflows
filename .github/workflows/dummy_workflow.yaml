@@ -1,0 +1,26 @@
+name: dummy-workflow
+
+on:
+
+  pull_request_target:
+    types: "*"
+    branches: "**"
+
+  pull_request_review:
+    types: "**"
+
+jobs:
+  dummy-workflow:
+    runs-on: ubuntu-latest
+    name: dummy-workflow
+    steps:
+      # - name: Create event JSON file
+      #   run: |
+      #     cd "${{ github.event_path }}"
+      #     # echo '${{ toJSON(github.event) }}' > event.json
+
+      - name: Upload event JSON as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: eventjson
+          path: "${{ github.event_path }}"

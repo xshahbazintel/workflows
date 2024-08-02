@@ -1,0 +1,31 @@
+name: dummy-workflow1
+
+on:
+
+  pull_request_target:
+    types: "*"
+    branches: "**"
+
+  pull_request_review:
+    types: "**"
+
+jobs:
+  trigger_actual_action:
+    runs-on: ubuntu-latest
+    steps:
+      # - name: Serialize Event Payload
+      #   id: serialize-event
+      #   run: |
+      #     # Convert the GitHub event to a string
+      #     FULL_EVENT_PAYLOAD='${{ toJSON(github.event) }}'
+      #     echo "FULL_EVENT_PAYLOAD=$FULL_EVENT_PAYLOAD" >> $GITHUB_ENV
+
+      - name: Trigger actual action workflow using curl
+        run: |
+          FULL_EVENT_PAYLOAD='${{ toJSON(github.event) }}'
+          curl -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ github.token }}" \
+            -H "Content-Type: application/json" \
+            -d '{"ref": "test-branch", "inputs": {"full_event_payload": "$FULL_EVENT_PAYLOAD"}}' \
+            https://api.github.com/repos/projectceladon/celadonworkflows/actions/workflows/actual_action_workflow.yml/dispatches
