@@ -1,0 +1,25 @@
+name: Trigger CI Tasks 
+on:
+  workflow_call:
+    inputs:
+      EVENT:
+        required: true
+        type: string         
+jobs:
+  TriggerBuild:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.4'  # Specify the Python version you need
+    - name: Run sample.exe
+      run: |
+        ./sample.exe  "hello"
+
+
+      
+              
+              
